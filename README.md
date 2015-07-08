@@ -1,6 +1,6 @@
 # YoutubePlaylistDownload
 ## Description & Instructions
-Downloads a YouTube playlist as MP3 files into a folder.  
+A small script which automates the downloading of a YouTube playlist as MP3 files. Organizes the files into a folder with the name of the playlist.  
   
 1. Ensure you have Python 3.x installed (script written in 3.4.3.)  
 2. Download the _selenium_ package using __pip install selenium__ in the console  
