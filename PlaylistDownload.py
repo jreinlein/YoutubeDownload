@@ -1,5 +1,6 @@
 # Author: James Reinlein (2015)
 import os
+import time
 import tkinter as tk
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -8,7 +9,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 url = ""
-folder = "Downloaded Playlist"
 
 def main():
     # get URL from clipboard then run
@@ -37,21 +37,33 @@ def download(driver):
     yt = 'https://www.youtube.com/watch?v='
 
     driver.get(url)
-		
-    # get all URLs
-    playlist = driver.find_element_by_id("playlist-autoscroll-list")
+    # navigate to get all URLs on one page
+    driver.find_element_by_class_name("playlist-title").click()
+    while True:
+        try:
+            button = WebDriverWait(driver, 3).until(
+                EC.presence_of_element_located((By.XPATH, "//button[contains(., 'Load more')]")))
+        except:
+            break # nothing left to load
 
-    items = playlist.find_elements(By.TAG_NAME, value='li')
+        button.click() # load more
+        time.sleep(1) # needed, or else it clicks too quickly and messes up
+
+    # get all URLs
+    playlist = driver.find_element_by_id("pl-video-table")
+    items = playlist.find_elements(By.TAG_NAME, value='tr')
+    
     urls = []
     for item in items:
-            urls.append(item.get_attribute('data-video-id'))
+        urls.append(item.get_attribute("data-video-id"))
+
 
     # get playlist title and set DL path
-    title = driver.find_element_by_class_name("playlist-title").text
+    title = driver.find_element_by_class_name("pl-header-title").text
     if not os.path.exists(os.getcwd() + '\\' + title): os.makedirs(title)
 
     # close driver and open up new one with proper download settings
-    print("Done!")
+    print(len(urls), "videos found!")
     driver.close()
     print('Starting downloads...', end="")
     
@@ -73,6 +85,7 @@ def download(driver):
         dlLink.click()
         #break # USED FOR TESTING PURPOSES
     print("Done! Please allow downloads to finish.")
+    
 
 '''
 def checkURL(url):
@@ -81,4 +94,3 @@ def checkURL(url):
 '''
 
 main()
-# check functionality on BIG playlists (50+ songs)
