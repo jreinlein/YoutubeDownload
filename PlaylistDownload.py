@@ -29,6 +29,12 @@ def profileSetup(playlistName):
     profile.set_preference('browser.download.dir', os.getcwd() + '\\' + playlistName)
 
     return profile
+
+def cleanString(string):
+    for ch in ['/', '\\', '?', '%', '*', ':', '|', '"', '<', '>', '.']:
+        if ch in string:
+            string = string.replace(ch, '-')
+    return string
         
      
 def download(driver):
@@ -58,15 +64,17 @@ def download(driver):
         urls.append(item.get_attribute("data-video-id"))
 
 
-    # get playlist title and set DL path
+    # get playlist title and remove forbidden chars
     title = driver.find_element_by_class_name("pl-header-title").text
+    title = cleanString(title)
     if not os.path.exists(os.getcwd() + '\\' + title): os.makedirs(title)
 
-    # close driver and open up new one with proper download settings
+    # close driver and open up new one
     print(len(urls), "videos found!")
     driver.close()
     print('Starting downloads...', end="")
-    
+
+    # set proper download settings
     profile = profileSetup(title)
     driver = webdriver.Firefox(profile)
 
@@ -83,7 +91,7 @@ def download(driver):
 
         dlLink = driver.find_element_by_link_text('Download')
         dlLink.click()
-        #break # USED FOR TESTING PURPOSES
+        #break # used for testing purposes
     print("Done! Please allow downloads to finish.")
     
 
