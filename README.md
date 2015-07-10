@@ -14,5 +14,7 @@ A small script which automates the downloading of a YouTube playlist as MP3 file
 * Firefox  
 
 ## To-Do
-* Add functionality for LONG playlists (>200)
-* Check to see if the script works on Linux/Mac
+* Test functionality on Linux/Mac
+* Test for funtionality on non-English YT
+* Test functionality on short playlists
+* Test functionality on weird Playlist names (eg titles with colons)
