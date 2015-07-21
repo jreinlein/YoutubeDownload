@@ -1,6 +1,7 @@
 # Author: James Reinlein (2015)
 import os
 import time
+import urllib
 # import tkinter as tk
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -15,6 +16,7 @@ def main():
     global url
     f = open('url.txt', 'r')
     url = f.readline()
+    validateUrl(url)
     '''
     # get URL from clipboard then run
     global url
@@ -85,6 +87,14 @@ def download(driver):
     print("Done!")
     print("Please allow download(s) to finish before closing browser.")
 
+
+def validateUrl(url):
+    s = urllib.parse.urlparse(url)
+    if "youtube" not in s.netloc:
+        raise ValueError('You failed to provide a YouTube link.')
+
+    if s.path not in ["/watch", "/playlist"]:
+        raise ValueError('The YouTube link you have provided is invalid.')
     
 def cleanString(string):
     for ch in ['/', '\\', '?', '%', '*', ':', '|', '"', '<', '>', '.']:
@@ -155,6 +165,6 @@ def getUrls(driver, category):
             urls.append(item.get_attribute("data-video-id"))
 
     return urls
-        
+
 
 main()
