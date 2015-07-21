@@ -50,10 +50,10 @@ def download(driver):
     
     category = getCategory(driver) # single, mix, or playlist
 
+    title = getFolderTitle(driver, category)
+
     # create folder to hold songs (mixes and playlists only)
-    title = None
     if category != "single":
-        title = driver.find_element_by_class_name("playlist-title").text
         title = cleanString(title)
         if not os.path.exists(os.getcwd() + '\\' + title): os.makedirs(title)
 
@@ -94,7 +94,9 @@ def cleanString(string):
 
 
 def getCategory(driver):
-    if len(driver.find_elements(By.CLASS_NAME, "playlist-info")) < 1:
+    if "playlist?" in driver.current_url:
+        return "playlist-page"
+    elif len(driver.find_elements(By.CLASS_NAME, "playlist-info")) < 1:
         return "single"
     else:
         title = driver.find_element_by_class_name("author-attribution").text
@@ -102,6 +104,17 @@ def getCategory(driver):
             return "mix"
         else:
             return "playlist"
+
+
+def getFolderTitle(driver, category):
+    if category == "single":
+        return None
+    elif category == "playlist" or category == "mix":
+        return driver.find_element_by_class_name("playlist-title").text
+    else: # playlist-page
+        return driver.find_element_by_class_name("pl-header-title").text
+
+    
 
 
 def getUrls(driver, category):
@@ -119,9 +132,11 @@ def getUrls(driver, category):
         for item in items:
             urls.append(item.get_attribute('data-video-id'))
 
-    else: # playlist
-        # navigate to get all URLs on one page
-        driver.find_element_by_class_name("playlist-title").click()
+    else: # playlists and playlist pages
+        # navigate to page for playlist
+        if category == "playlist":
+            driver.find_element_by_class_name("playlist-title").click()
+        
         while True:
             try:
                 button = WebDriverWait(driver, 3).until(
