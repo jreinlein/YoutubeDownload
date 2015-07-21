@@ -1,4 +1,4 @@
-# YoutubePlaylistDownload
+# YoutubeDownload
 ## Description
 A small script which automates the downloading of videos off YouTube as MP3 files.  
 Works for single songs, mixes, and playlists.  
