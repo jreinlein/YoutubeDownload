@@ -19,7 +19,8 @@ Organizes the files into an appropriately-named folder when downloading mixes an
 ## Future Plans
 * Test functionality on Linux/Mac
 * Test funtionality on non-English YT
-* Improve UX (error messages)
+* :white_check_mark: Improve UX (error messages)
+* :white_check_mark: Validate given URL
 * Add support for:
   - :white_check_mark: Mixes (different from playlists)
   - :white_check_mark: URL of the playlist itself (rather than video in playlist)
