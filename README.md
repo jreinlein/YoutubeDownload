@@ -3,6 +3,7 @@
 A small script which automates the downloading of videos off YouTube as MP3 files.  
 Works for single songs, mixes, and playlists.  
 Organizes the files into an appropriately-named folder when downloading mixes and playlists.
+
 ## Instructions
 1. Ensure you have Python 3.x installed (script written in 3.4.3.)  
 2. Download the _selenium_ package using __pip install selenium__ in the console  
@@ -21,6 +22,6 @@ Organizes the files into an appropriately-named folder when downloading mixes an
 * Improve UX (error messages)
 * Add support for:
   - :white_check_mark: Mixes (different from playlists)
-  - URL of the playlist itself (rather than video in playlist)
+  - :white_check_mark: URL of the playlist itself (rather than video in playlist)
   - :white_check_mark: Single songs
   - Multiple URLs in file
